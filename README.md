@@ -68,7 +68,10 @@ Example test:
 TEST(stringToBool) {
     ASSERT_TRUE( stringToBool("true") );
     ASSERT_FALSE( stringToBool("false") );
-    ASSERT_FALSE( stringToBool(NULL) );
+    ASSERT_EQ( "%u", 1 + 1, 2 );
+    ASSERT_NOT_EQ( "%u", 2 + 2, 5 );
+    ASSERT_STRING_EQ( "String1", "String1" );
+    ASSERT_STRING_NOT_EQ( "String1", "String2" );
 }
 ```
 
