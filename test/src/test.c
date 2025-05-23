@@ -1,7 +1,5 @@
 #include "test.h"
 
-#include "stdfunc.h"
-
 testEntry_t g_testRegistry[ MAX_TESTS ];
 size_t g_testCount = 0;
 

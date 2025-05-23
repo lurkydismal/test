@@ -254,36 +254,38 @@ char** splitStringIntoArrayBySymbol( const char* restrict _string,
         ( _elementType* )( l_array + 1 );             \
     } )
 
-#define preallocateArray( _array, _length )                                    \
-    do {                                                                       \
-        size_t* l_base = arrayLengthPointer( *( _array ) );                    \
-        size_t l_oldLen = *l_base;                                             \
-        size_t l_newLen = l_oldLen + ( _length );                              \
-        size_t* l_realloc =                                                    \
-            realloc( l_base, sizeof( size_t ) +                                \
-                                 ( l_newLen * sizeof( typeof( *_array ) ) ) ); \
-        if ( l_realloc ) {                                                     \
-            *l_realloc = l_newLen;                                             \
-            *( _array ) = ( typeof( *_array ) )( l_realloc + 1 );              \
-        }                                                                      \
+#define preallocateArray( _array, _length )                               \
+    do {                                                                  \
+        size_t* l_arrayAllocationCurrent =                                \
+            arrayAllocationPointer( *( _array ) );                        \
+        size_t l_arrayLengthCurrent = arrayLength( *( _array ) );         \
+        size_t l_arrayLengthNew = ( l_arrayLengthCurrent + ( _length ) ); \
+        size_t* l_arrayAllocationNew = ( size_t* )realloc(                \
+            l_arrayAllocationCurrent,                                     \
+            ( sizeof( size_t ) +                                          \
+              ( l_arrayLengthNew * sizeof( typeof( *( _array ) ) ) ) ) ); \
+        if ( l_arrayAllocationNew ) {                                     \
+            *l_arrayAllocationNew = l_arrayLengthNew;                     \
+            *( _array ) =                                                 \
+                ( typeof( *( _array ) ) )( l_arrayAllocationNew + 1 );    \
+        }                                                                 \
     } while ( 0 )
 
-#define insertIntoArray( _array, _value )                                      \
-    ( {                                                                        \
-        size_t l_ret = -1;                                                     \
-        size_t* l_base = arrayLengthPointer( *( _array ) );                    \
-        size_t l_oldLen = *l_base;                                             \
-        size_t l_newLen = l_oldLen + 1;                                        \
-        size_t* l_realloc =                                                    \
-            realloc( l_base, sizeof( size_t ) +                                \
-                                 ( l_newLen * sizeof( typeof( *_array ) ) ) ); \
-        if ( l_realloc ) {                                                     \
-            *l_realloc = l_newLen;                                             \
-            *( _array ) = ( typeof( *_array ) )( l_realloc + 1 );              \
-            ( *( _array ) )[ l_oldLen ] = ( typeof( **_array ) )( _value );    \
-            l_ret = ( size_t )l_oldLen;                                        \
-        }                                                                      \
-        ( size_t )l_ret;                                                       \
+#define insertIntoArray( _array, _value )                                    \
+    ( {                                                                      \
+        size_t* l_arrayAllocationCurrent =                                   \
+            arrayAllocationPointer( *( _array ) );                           \
+        size_t l_arrayLengthCurrent = arrayLength( *( _array ) );            \
+        size_t l_arrayLengthNew = ( l_arrayLengthCurrent + 1 );              \
+        size_t* l_arrayAllocationNew = ( size_t* )realloc(                   \
+            l_arrayAllocationCurrent,                                        \
+            ( sizeof( size_t ) +                                             \
+              ( l_arrayLengthNew * sizeof( typeof( *( _array ) ) ) ) ) );    \
+        *l_arrayAllocationNew = l_arrayLengthNew;                            \
+        *( _array ) = ( typeof( *( _array ) ) )( l_arrayAllocationNew + 1 ); \
+        ( *( _array ) )[ l_arrayLengthCurrent ] =                            \
+            ( typeof( **( _array ) ) )( _value );                            \
+        ( ( size_t )l_arrayLengthCurrent );                                  \
     } )
 
 ssize_t findStringInArray( const char** restrict _array,
