@@ -59,9 +59,9 @@ chmod +x build.sh
 
 ## Usage
 
-1. Define your code parts in the top‑level config.sh ( e.g. folder names in partsToBuild ).
-1. Under "tests/", create a subdirectory ( e.g. tests/stdfunc/ ) with its own config.sh that sets FILES\_TO\_COMPILE="...".
-1. Write tests using the TEST(name) { … } and ASSERT\_TRUE / ASSERT\_FALSE, other macros in .c files specified by FILES\_TO\_COMPILE.
+1. Define your code parts in the top‑level **config.sh** ( e.g. folder names in `partsToBuild` ).
+1. Under **"tests/"**, create a subdirectory ( e.g. **tests/stdfunc/** ) with its own **config.sh** that sets **FILES\_TO\_COMPILE="..."**.
+1. Write tests using the `TEST(name) { … }` and `ASSERT\_TRUE` / `ASSERT\_FALSE`, other macros in **C**/ **C++**  files specified by **FILES\_TO\_COMPILE**.
 
 Example test:
 ```c
@@ -107,5 +107,4 @@ Created by [@lurkydismal](https://github.com/lurkydismal) - feel free to contact
 
 ## License
 
-This project is open source and available under the
-[GNU Affero General Public License v3.0](https://github.com/lurkydismal/test/blob/main/LICENSE).
+This project is open source and available under the [GNU Affero General Public License v3.0](https://github.com/lurkydismal/test/blob/main/LICENSE).
